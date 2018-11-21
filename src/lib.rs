@@ -17,6 +17,7 @@ impl Parser {
             symbol_table: HashMap::<String, i64>::new(),
         }
     }
+    
     method!(
         parens<Parser, CompleteStr, i64>,
         mut self,
@@ -44,7 +45,7 @@ impl Parser {
 
     method!(
         identifier<Parser, CompleteStr, i64>,
-        self,
+        mut self,
         do_parse!(
             tag!("$")
                 >> init: alpha
@@ -75,12 +76,11 @@ impl Parser {
 
     method!(
         term<Parser, CompleteStr, i64>,
-        self,
+        mut self,
         do_parse!(
             init: call_m!(self.factor)
                 >> res: fold_many0!(
-                    pair!(alt!(char!('*') | char!('/')),
-                          call_m!(self.factor)),
+                    pair!(alt!(char!('*') | char!('/')), call_m!(self.factor)),
                     init,
                     |acc, (op, val): (char, i64)| if op == '*' { acc * val } else { acc / val }
                 )
@@ -90,7 +90,7 @@ impl Parser {
 
     method!(
         expr<Parser, CompleteStr, i64>,
-        self,
+        mut self,
         do_parse!(
             init: call_m!(self.term)
                 >> res: fold_many0!(
