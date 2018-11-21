@@ -1,0 +1,8 @@
+[package]
+name = "gc"
+version = "0.1.0"
+authors = ["gganley <gganley@student.bridgew.edu>"]
+edition = "2018"
+
+[dependencies]
+nom = "4.1.1"
